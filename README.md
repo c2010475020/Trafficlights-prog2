@@ -1,4 +1,4 @@
-#Link zum Repository: https://github.com/c2010475020/Trafficlights-prog2
+# Link zum Repository: https://github.com/c2010475020/Trafficlights-prog2
 
 
 # Traffic Light
