@@ -25,6 +25,17 @@ public class TrafficLightCtrl {
         gui = new TrafficLightGui(this);
         gui.setVisible(true);
         //TODO useful to update the current state
+        currentState.notifyObserver();
+    }
+
+    //implements controller as Singleton Pattern -> if there is no instance create one
+    private static TrafficLightCtrl controller = null;
+
+    public static TrafficLightCtrl getController() {
+        if (controller == null) {
+            controller = new TrafficLightCtrl();
+        }
+        return controller;
     }
 
     private void initStates() {
@@ -33,8 +44,12 @@ public class TrafficLightCtrl {
             public State getNextState() {
                 previousState = currentState;
                 //TODO useful to update the current state and the old one
+                currentState.notifyObserver();
+                yellowState.notifyObserver();
+
                 return yellowState;
             }
+
             @Override
             public String getColor() {
                 return "green";
@@ -46,8 +61,13 @@ public class TrafficLightCtrl {
             public State getNextState() {
                 previousState = currentState;
                 //TODO useful to update the current state and the old one
+                yellowState.notifyObserver();
+                currentState.notifyObserver();
+
+
                 return yellowState;
             }
+
             @Override
             public String getColor() {
                 return "red";
@@ -60,13 +80,20 @@ public class TrafficLightCtrl {
                 if (previousState.equals(greenState)) {
                     previousState = currentState;
                     //TODO useful to update the current state and the old one
+                    currentState.notifyObserver();
+                    redState.notifyObserver();
+
                     return redState;
-                }else {
+                } else {
                     previousState = currentState;
                     //TODO useful to update the current state and the old one
+                    currentState.notifyObserver();
+                    greenState.notifyObserver();
+
                     return greenState;
                 }
             }
+
             @Override
             public String getColor() {
                 return "yellow";
@@ -88,7 +115,7 @@ public class TrafficLightCtrl {
         return yellowState;
     }
 
-    public void run()  {
+    public void run() {
         int intervall = 1500;
         while (doRun) {
             try {
